@@ -6,6 +6,7 @@ import copy
 from dowel import tabular
 import numpy as np
 import torch
+from tqdm import tqdm
 
 from garage import (_Default, EpisodeBatch, log_multitask_performance,
                     make_optimizer)
@@ -198,7 +199,8 @@ class MAML:
         all_params = []
         theta = dict(self._policy.named_parameters())
 
-        for i, env_up in enumerate(tasks):
+        print("MAML obtaining samples from {} environment tasks".format(len(tasks)))
+        for i, env_up in enumerate(tqdm(tasks)):
 
             for j in range(self._num_grad_updates + 1):
                 episodes = trainer.obtain_episodes(trainer.step_itr,
